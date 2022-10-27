@@ -1,0 +1,66 @@
+server:
+  port: 9090
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/artmarket?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password:
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: false
+
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+
+
+art:
+  key: art0819
+
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          kakao:
+#            client-id: 093ba4e74d4b3c4f8c3b4a7e4d91d82e
+#            client-secret: OGnFPZSktCCT44fGRvSHkpxBaluKlM2g
+#            redirect-uri: http://localhost:8080/auth/kakao/callback
+#            authorization-grant-type: authorization_code
+#            client-authentication-method: POST
+#            client-name: Kakao
+#            scope:
+#              - profile_nickname
+#              - account_email
+#
+#
+#        provider:
+#
+#          kakao:
+#            authorization-uri: https://kauth.kakao.com/oauth/authorize
+#            token-uri: https://kauth.kakao.com/oauth/token
+#            user-info-uri: https://kapi.kakao.com/v2/user/me
+#            user-name-attribute: id
+
+
