@@ -54,8 +54,11 @@ public class InquiryApiController {
         return new ResponseDto<>(HttpStatus.OK.value(), 1);
     }
 
-
-
-
+    @DeleteMapping("/delete/{id}")
+    public ResponseDto<Integer> deleteInquiry(@PathVariable Long id,
+                                              @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        inquiryService.deleteInquiry(id, principalDetail);
+        return new ResponseDto<>(HttpStatus.OK.value(), 1);
+    }
 
 }

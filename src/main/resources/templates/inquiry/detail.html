@@ -15,6 +15,7 @@
 
     <div class="form-group">
         <h3 th:text="${inquiry.title}">제목</h3>
+        <div style="display: none" id="inquiryId"  th:text="${inquiry.getId()}"></div>
     </div>
     <hr>
 
@@ -37,7 +38,7 @@
     <div th:align="right">
         <div>
             <a th:if="${inquiry.user.getUsername() == #authentication.name}" th:href="@{|/inquiry/${inquiry.getId()}/update|}"  class="btn btn-primary">수정</a>
-            <button id="btn-delete"  class="btn btn-danger">삭제</button>
+            <button type="button" id="btn-delete"  class="btn btn-danger">삭제</button>
         </div>
     </div>
 
@@ -46,7 +47,6 @@
         <div class = "card">
             <form>
                 <input type = "hidden" id="userId" th:value="${principalDetail.user.id}">
-                <input type="hidden" id="inquiryId" th:value="${inquiry.id}">
                 <div class="card-body">
                     <textarea id="reply-content" class="form-control" rows="1"></textarea>
                 </div>

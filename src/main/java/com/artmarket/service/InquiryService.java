@@ -56,4 +56,10 @@ public interface InquiryService {
      */
     void updateInquiryFile(Long id, String title, String content, MultipartFile file) throws IOException;
 
+    /**
+     * 문의 사항 삭제
+     * 권한 확인 후 삭제
+     */
+    void deleteInquiry(Long id, PrincipalDetail principalDetail);
+
 }

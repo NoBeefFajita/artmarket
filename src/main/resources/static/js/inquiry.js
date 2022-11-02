@@ -8,27 +8,29 @@ const filebox = document.getElementsByClassName("filebox");
 const blob_img = document.getElementById("blob_img");
 const previous_img = document.getElementById("previous_img");
 
-file_up.addEventListener("change", () => {
-    let file = file_up.files[0];
-    let ext = file.type;
-    let result = (/^image\//gi).test(ext);
+if( file_up != null) {
+    file_up.addEventListener("change", () => {
+        let file = file_up.files[0];
+        let ext = file.type;
+        let result = (/^image\//gi).test(ext);
 
-    if (result) {
-        if(previous_img != null) {
-            previous_img.style.display = "none";
-            delete_pre_img.style.display="none";
+        if (result) {
+            if(previous_img != null) {
+                previous_img.style.display = "none";
+                delete_pre_img.style.display="none";
+            }
+            filebox[0].firstElementChild.style.display = "none";
+            blob_img.src = window.URL.createObjectURL(file);
+            blob_img.style.width = "200px";
+        } else {
+            blob_img.src = "";
+            filebox[0].firstElementChild.style.display = "block";
+            filebox[0].firstElementChild.innerHTML = "다른 파일 선택";
+
+            // 사진 이외의 파일이면 등록버튼 잠궈주세요
         }
-        filebox[0].firstElementChild.style.display = "none";
-        blob_img.src = window.URL.createObjectURL(file);
-        blob_img.style.width = "200px";
-    } else {
-        blob_img.src = "";
-        filebox[0].firstElementChild.style.display = "block";
-        filebox[0].firstElementChild.innerHTML = "다른 파일 선택";
-
-        // 사진 이외의 파일이면 등록버튼 잠궈주세요
-    }
-});
+    });
+}
 
 
 // 이전 사진 삭제
@@ -49,6 +51,7 @@ const answer_btn = document.getElementById("btn-answer-save");
 
 if (save_btn!=null)save_btn.addEventListener("click", save);
 if (update_btn!=null)update_btn.addEventListener("click", update);
+if (delete_btn!=null)delete_btn.addEventListener("click", deleteById);
 
 
 // 저장
@@ -140,6 +143,22 @@ function update() {
             })
             .catch(e => alert(e + " 이미지"))
     }
+}
+
+
+// 삭제
+function deleteById() {
+    let id = $("#inquiryId").text();
+    console.log(id)
+
+    fetch("/api/inquiry/delete/" + id, {
+        method: 'DELETE'
+    })
+        .then(() => {
+            alert("삭제되었습니다.")
+            location.href = "/inquiry"
+        })
+        .catch(e => alert(e))
 }
 
 

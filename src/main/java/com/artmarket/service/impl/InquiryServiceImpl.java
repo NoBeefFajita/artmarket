@@ -121,6 +121,20 @@ public class InquiryServiceImpl implements InquiryService {
         inquiryRepository.save(inquiry);
     }
 
+    @Override
+    public void deleteInquiry(Long id, PrincipalDetail principalDetail) {
+        Inquiry inquiry = detail(id);
+        User user = principalDetail.getUser();
+
+        // 권한 확인
+        if (checkAuth(detail(id), user) || checkAdmin(user)) {
+            if (inquiry.getImg() != null) {
+                deleteImg(inquiry);
+            }
+            inquiryRepository.deleteById(id);
+        }
+    }
+
     /**
      * 이미지 저장
      */
