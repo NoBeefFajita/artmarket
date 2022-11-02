@@ -135,6 +135,14 @@ public class InquiryServiceImpl implements InquiryService {
         }
     }
 
+    @Override
+    public void answerUpdate(Long id, String answer) {
+        Inquiry inquiry = detail(id);
+        inquiry.setAnswer(answer);
+        inquiry.setConfirm(Confirm.O);
+        inquiryRepository.save(inquiry);
+    }
+
     /**
      * 이미지 저장
      */

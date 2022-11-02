@@ -42,36 +42,30 @@
         </div>
     </div>
 
-<!--    관리자일 때 답변 달기 가능-->
-    <div sec:authorize="hasRole('ADMIN')">
+<!--    관리자일 때, 답변을 달기 전 달기 가능-->
+    <div sec:authorize="hasRole('ADMIN')" th:if="${inquiry.confirm} == ${X}">
         <div class = "card">
             <form>
-                <input type = "hidden" id="userId" th:value="${principalDetail.user.id}">
                 <div class="card-body">
-                    <textarea id="reply-content" class="form-control" rows="1"></textarea>
+                    <textarea id="answer-content" class="form-control" rows="3"></textarea>
                 </div>
                 <div class = "card-footer">
-                    <button type="button" id="btn-reply-save" class="btn btn-primary">입력</button>
+                    <button type="button" id="btn-answer-save" class="btn btn-primary">입력</button>
                 </div>
             </form>
         </div>
     </div>
-<!--    <br />-->
-<!--    <div class = "card">-->
-<!--        <div class = "card-header">댓글 리스트</div>-->
-<!--        <ul th:each="reply : ${inquiry.reply}" id="reply-box" class="list-group">-->
-<!--            <li th:id="|reply-${reply.id}|" class="list-group-item">-->
-<!--            <li class="list-group-item">-->
-<!--                <div class = "d-flex ">-->
-<!--                    <div th:text="|작성자 : ${reply.user.username} &nbsp|">작성자: yuju &nbsp;</div>-->
-<!--                    <button th:onclick="|javascript:index.replyDelete(${inquiry.id}, ${reply.id})|" class="badge">삭제</button>-->
-<!--                </div>-->
-
-<!--                <div th:text="${reply.content}">댓글 내용</div>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--    </div>-->
-<!--    <br />-->
+    <br />
+    <div class = "card" th:unless="${inquiry.confirm} == ${X}">
+        <p th:utext="${inquiry.answer}" id="answer">답변내용</p>
+        <textarea style="display: none" th:text="${inquiry.answer}" id="answer-edit" class="form-control" rows="3"></textarea>
+        <div></div>
+        <div class = "d-flex " sec:authorize="hasRole('ADMIN')">
+            <button type="button" id="btn-answer-update" class="btn btn-primary">수정</button>
+            <button type="button" style="display: none" id="btn-answer-edit" class="btn btn-primary">입력</button>
+        </div>
+    </div>
+    <br />
 
 
 </div>

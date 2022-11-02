@@ -48,10 +48,15 @@ const save_btn = document.getElementById("btn-save");
 const delete_btn = document.getElementById("btn-delete");
 const update_btn = document.getElementById("btn-update");
 const answer_btn = document.getElementById("btn-answer-save");
+const answer_update_btn = document.getElementById("btn-answer-update");
+const answer_edit_btn = document.getElementById("btn-answer-edit");
 
 if (save_btn!=null)save_btn.addEventListener("click", save);
 if (update_btn!=null)update_btn.addEventListener("click", update);
 if (delete_btn!=null)delete_btn.addEventListener("click", deleteById);
+if (answer_btn!=null)answer_btn.addEventListener("click", saveAnswer);
+if (answer_update_btn!=null)answer_update_btn.addEventListener("click", updateAnswer);
+if (answer_edit_btn!=null)answer_edit_btn.addEventListener("click", saveEditAnswer);
 
 
 // 저장
@@ -149,7 +154,6 @@ function update() {
 // 삭제
 function deleteById() {
     let id = $("#inquiryId").text();
-    console.log(id)
 
     fetch("/api/inquiry/delete/" + id, {
         method: 'DELETE'
@@ -162,4 +166,50 @@ function deleteById() {
 }
 
 
+// 답변
+function saveAnswer() {
+    let id = $("#inquiryId").text();
+    let data = {
+        answer : $("#answer-content").val()
+    }
 
+    fetch("/api/inquiry/answer/" + id, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data),
+    })
+        .then(() => {
+            alert("등록되었습니다.")
+            location.reload();
+        })
+        .catch(e => alert(e))
+}
+
+// 답변 수정 버튼
+function updateAnswer() {
+    const answer = document.getElementById("answer");
+    const answer_edit = document.getElementById("answer-edit");
+    answer_update_btn.style.display="none";
+    answer_edit_btn.style.display="inline";
+    answer.style.display="none";
+    answer_edit.style.display="inline";
+}
+
+// 답변 수정
+function saveEditAnswer() {
+    let id = $("#inquiryId").text();
+    let data = {
+        answer : $("#answer-edit").val()
+    }
+
+    fetch("/api/inquiry/answer/" + id, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data),
+    })
+        .then(() => {
+            alert("등록되었습니다.")
+            location.reload();
+        })
+        .catch(e => alert(e))
+}

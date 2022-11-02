@@ -1,6 +1,7 @@
 package com.artmarket.controller.api;
 
 import com.artmarket.config.auth.PrincipalDetail;
+import com.artmarket.domain.inquiry.Confirm;
 import com.artmarket.domain.inquiry.Inquiry;
 import com.artmarket.dto.ResponseDto;
 import com.artmarket.service.impl.InquiryServiceImpl;
@@ -9,9 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.io.File;
 import java.io.IOException;
 
 @RequiredArgsConstructor
@@ -61,4 +60,10 @@ public class InquiryApiController {
         return new ResponseDto<>(HttpStatus.OK.value(), 1);
     }
 
+    @PutMapping("/answer/{id}")
+    public ResponseDto<Integer> answerInquiry(@PathVariable Long id,
+                                              @RequestBody Inquiry inquiry) {
+        inquiryService.answerUpdate(id, inquiry.getAnswer());
+        return new ResponseDto<>(HttpStatus.OK.value(), 1);
+    }
 }

@@ -62,4 +62,9 @@ public interface InquiryService {
      */
     void deleteInquiry(Long id, PrincipalDetail principalDetail);
 
+    /**
+     * 답변 달기
+     */
+    void answerUpdate(Long id, String answer);
+
 }

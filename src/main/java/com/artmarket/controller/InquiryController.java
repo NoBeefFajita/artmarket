@@ -1,6 +1,7 @@
 package com.artmarket.controller;
 
 import com.artmarket.config.auth.PrincipalDetail;
+import com.artmarket.domain.inquiry.Confirm;
 import com.artmarket.domain.inquiry.Inquiry;
 import com.artmarket.domain.users.User;
 import com.artmarket.dto.MessageDto;
@@ -59,6 +60,7 @@ public class InquiryController {
         // 본인 문의 사항 or 관리자만 확인 가능
         if(auth || inquiry.checkAdmin(user)) {
             model.addAttribute("inquiry", detail);
+            model.addAttribute("X", Confirm.X);
             model.addAttribute("principalDetail", principalDetail);
             return "inquiry/detail";
         } else {
