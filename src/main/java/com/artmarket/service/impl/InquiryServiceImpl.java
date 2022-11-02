@@ -37,7 +37,7 @@ public class InquiryServiceImpl implements InquiryService {
     public Page<Inquiry> inquiryList(Pageable pageable, @AuthenticationPrincipal PrincipalDetail principal) {
 
         // 관리자는 모든 문의를 볼 수 있다
-        if(principal.getUser().getRole().equals(RoleType.ADMIN))
+        if(checkAdmin(principal.getUser()))
             return inquiryRepository.findAll(pageable);
 
         return inquiryRepository.findByUser(principal.getUser(), pageable);
@@ -92,5 +92,15 @@ public class InquiryServiceImpl implements InquiryService {
     @Override
     public Inquiry detail(Long id) {
         return inquiryRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public Boolean checkAuth(Inquiry inquiry, User user) {
+        return user.getId().equals(inquiry.getUser().getId());
+    }
+
+    @Override
+    public Boolean checkAdmin(User user) {
+        return user.getRole().equals(RoleType.ADMIN);
     }
 }

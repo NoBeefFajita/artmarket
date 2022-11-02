@@ -33,4 +33,18 @@ public interface InquiryService {
      * 고객 문의 정보 반환
      */
     Inquiry detail(Long id);
+
+    /**
+     * 권한 확인
+     * inquiry 유저 id 와 user id가 동일하면 true
+     */
+    Boolean checkAuth(Inquiry inquiry, User user);
+
+    /**
+     * 롤 타입 확인
+     * 관리자 : true
+     * 유저 : false
+     */
+    Boolean checkAdmin(User user);
+
 }

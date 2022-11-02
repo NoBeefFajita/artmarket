@@ -25,10 +25,10 @@
     </div>
     <hr>
 
-    <!--   th:utext 를 사용해야 DB안에 html태그까지 모두 적용함(<p> 태그같은거나옴)    -->
     <div class="form-group">
         <div>문의 내용 :</div>
         <div th:utext="${inquiry.content}">글 내용</div>
+<!--        이미지 있으면 보여주기-->
         <img th:src="@{/img/display?fileSource=}+${inquiry.img}" alt="첨부이미지" th:if="${inquiry.img != null}" width="300px"/>
     </div>
     <hr>
@@ -36,27 +36,25 @@
 
     <div th:align="right">
         <div th:if="${inquiry.user.getUsername() == #authentication.name}">
-            <a th:href="@{|/inquiry/${inquiry.getId()}/updateForm|}"  class="btn btn-primary">수정</a>
+            <a th:href="@{|/inquiry/${inquiry.getId()}/update|}"  class="btn btn-primary">수정</a>
             <button id="btn-delete"  class="btn btn-danger">삭제</button>
-            <button  class="btn btn-success" onclick="history.back()">돌아가기</button>
         </div>
-
-        <div th:unless="${inquiry.user.getUsername() == #authentication.name}">
-            <button  class="btn btn-success" onclick="history.back()">돌아가기</button>
-        </div>
-
     </div>
-    <div class = "card">
-        <form>
-            <input type = "hidden" id="userId" th:value="${principalDetail.user.id}">
-            <input type="hidden" id="inquiryId" th:value="${inquiry.id}">
-            <div class="card-body">
-                <textarea id="reply-content" class="form-control" rows="1"></textarea>
-            </div>
-            <div class = "card-footer">
-                <button type="button" id="btn-reply-save" class="btn btn-primary">입력</button>
-            </div>
-        </form>
+
+<!--    관리자일 때 답변 달기 가능-->
+    <div sec:authorize="hasRole('ADMIN')">
+        <div class = "card">
+            <form>
+                <input type = "hidden" id="userId" th:value="${principalDetail.user.id}">
+                <input type="hidden" id="inquiryId" th:value="${inquiry.id}">
+                <div class="card-body">
+                    <textarea id="reply-content" class="form-control" rows="1"></textarea>
+                </div>
+                <div class = "card-footer">
+                    <button type="button" id="btn-reply-save" class="btn btn-primary">입력</button>
+                </div>
+            </form>
+        </div>
     </div>
 <!--    <br />-->
 <!--    <div class = "card">-->
