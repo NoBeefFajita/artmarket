@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <div th:replace="/layout/header.html :: fragment-header"></div>
+    <link th:href="@{/css/detail.css}" rel="stylesheet" />
+</head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<body>
+<div th:replace="/layout/navbar.html :: fragment-nav"></div>
+
+<div class="container">
+
+    <div class="form-group">
+        <h3 th:text="${inquiry.title}">제목</h3>
+    </div>
+    <hr>
+
+    <div>
+        <div class="side">
+            (문의자: <span th:text="${inquiry.user.getUsername()}"/>)
+        </div>
+    </div>
+    <hr>
+
+    <!--   th:utext 를 사용해야 DB안에 html태그까지 모두 적용함(<p> 태그같은거나옴)    -->
+    <div class="form-group">
+        <div>문의 내용 :</div>
+        <div th:utext="${inquiry.content}">글 내용</div>
+        <img th:src="@{/img/display?fileSource=}+${inquiry.img}" alt="첨부이미지" th:if="${inquiry.img != null}" width="300px"/>
+    </div>
+    <hr>
+    <br/>
+
+    <div th:align="right">
+        <div th:if="${inquiry.user.getUsername() == #authentication.name}">
+            <a th:href="@{|/inquiry/${inquiry.getId()}/updateForm|}"  class="btn btn-primary">수정</a>
+            <button id="btn-delete"  class="btn btn-danger">삭제</button>
+            <button  class="btn btn-success" onclick="history.back()">돌아가기</button>
+        </div>
+
+        <div th:unless="${inquiry.user.getUsername() == #authentication.name}">
+            <button  class="btn btn-success" onclick="history.back()">돌아가기</button>
+        </div>
+
+    </div>
+    <div class = "card">
+        <form>
+            <input type = "hidden" id="userId" th:value="${principalDetail.user.id}">
+            <input type="hidden" id="inquiryId" th:value="${inquiry.id}">
+            <div class="card-body">
+                <textarea id="reply-content" class="form-control" rows="1"></textarea>
+            </div>
+            <div class = "card-footer">
+                <button type="button" id="btn-reply-save" class="btn btn-primary">입력</button>
+            </div>
+        </form>
+    </div>
+<!--    <br />-->
+<!--    <div class = "card">-->
+<!--        <div class = "card-header">댓글 리스트</div>-->
+<!--        <ul th:each="reply : ${inquiry.reply}" id="reply-box" class="list-group">-->
+<!--            <li th:id="|reply-${reply.id}|" class="list-group-item">-->
+<!--            <li class="list-group-item">-->
+<!--                <div class = "d-flex ">-->
+<!--                    <div th:text="|작성자 : ${reply.user.username} &nbsp|">작성자: yuju &nbsp;</div>-->
+<!--                    <button th:onclick="|javascript:index.replyDelete(${inquiry.id}, ${reply.id})|" class="badge">삭제</button>-->
+<!--                </div>-->
+
+<!--                <div th:text="${reply.content}">댓글 내용</div>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--    <br />-->
+
+
+</div>
+
+<footer th:replace="/layout/footer.html :: fragment-footer"></footer>
+
+<script src="/js/inquiry.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</body>
+</html>
