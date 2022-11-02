@@ -6,6 +6,13 @@
 <body>
 <div th:replace="/layout/header.html :: fragment-header"></div>
 <div th:replace="/layout/navbar.html :: fragment-nav"></div>
+
+<select id="filter_select">
+  <option value="">--필터 옵션--</option>
+  <option value="O">답변 : O</option>
+  <option value="X">답변 : X</option>
+</select>
+
   <div class="card m-2" th:each="inquiry : ${inquiryList.getContent()}">
     <h4 class="card-title" th:text="${inquiry.title}"></h4>
     <p th:text="|문의자 : ${inquiry.user.username}|"></p>
@@ -49,6 +56,8 @@
   </ul>
 </div>
 <!-- 페이징처리 끝 -->
+
+<script src="/js/inquiry.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <footer th:replace="/layout/footer.html :: fragment-footer"></footer>
 

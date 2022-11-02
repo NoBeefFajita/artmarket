@@ -1,6 +1,7 @@
 package com.artmarket.service;
 
 import com.artmarket.config.auth.PrincipalDetail;
+import com.artmarket.domain.inquiry.Confirm;
 import com.artmarket.domain.inquiry.Inquiry;
 import com.artmarket.domain.users.User;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,12 @@ public interface InquiryService {
      * 문의 사항 페이징
      */
     Page<Inquiry> inquiryList(Pageable pageable, @AuthenticationPrincipal PrincipalDetail principal);
+
+    /**
+     * 문의 사항 페이징 - confirm 별
+     */
+    Page<Inquiry> inquiryListConfirm(Pageable pageable, Confirm confirm, @AuthenticationPrincipal PrincipalDetail principal);
+
 
     /**
      * 문의 사항 저장

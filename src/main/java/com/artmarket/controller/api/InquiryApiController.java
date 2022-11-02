@@ -1,7 +1,6 @@
 package com.artmarket.controller.api;
 
 import com.artmarket.config.auth.PrincipalDetail;
-import com.artmarket.domain.inquiry.Confirm;
 import com.artmarket.domain.inquiry.Inquiry;
 import com.artmarket.dto.ResponseDto;
 import com.artmarket.service.impl.InquiryServiceImpl;

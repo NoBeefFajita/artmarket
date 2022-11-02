@@ -37,6 +37,19 @@ public class InquiryController {
     }
 
     /**
+     * 고객 문의 메인 - confirm 별
+     */
+    @GetMapping("/confirm/{confirm}")
+    public String inquiryMainConfirm(@PathVariable Confirm confirm,
+                                     @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC)Pageable pageable,
+                                     @AuthenticationPrincipal PrincipalDetail principalDetail,
+                                     Model model) {
+        // 선택 confirm 별 문의사항 보기
+        model.addAttribute("inquiryList", inquiry.inquiryListConfirm(pageable, confirm, principalDetail));
+        return "/inquiry/main";
+    }
+
+    /**
      * 문의글 쓰기
      */
     @GetMapping("/writing")

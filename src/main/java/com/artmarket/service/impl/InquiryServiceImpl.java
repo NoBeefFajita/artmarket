@@ -37,11 +37,26 @@ public class InquiryServiceImpl implements InquiryService {
     @Override
     public Page<Inquiry> inquiryList(Pageable pageable, @AuthenticationPrincipal PrincipalDetail principal) {
 
-        // 관리자는 모든 문의를 볼 수 있다
-        if(checkAdmin(principal.getUser()))
-            return inquiryRepository.findAll(pageable);
+        User user = principal.getUser();
 
-        return inquiryRepository.findByUser(principal.getUser(), pageable);
+        // 관리자는 모든 문의를 볼 수 있다
+        if(checkAdmin(user)) {
+            return inquiryRepository.findAll(pageable);
+        }
+
+        return inquiryRepository.findByUser(user, pageable);
+    }
+
+    @Override
+    public Page<Inquiry> inquiryListConfirm(Pageable pageable, Confirm confirm, @AuthenticationPrincipal PrincipalDetail principal) {
+
+        User user = principal.getUser();
+
+        if(checkAdmin(user)) {
+            return inquiryRepository.findByConfirm(confirm, pageable);
+        }
+
+        return inquiryRepository.findByUserAndConfirm(user, confirm, pageable);
     }
 
     @Override
