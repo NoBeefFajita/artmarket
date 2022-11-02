@@ -8,7 +8,7 @@
 <div th:replace="/layout/navbar.html :: fragment-nav"></div>
   <div class="card m-2" th:each="inquiry : ${inquiryList.getContent()}">
     <h4 class="card-title" th:text="${inquiry.getTitle()}"></h4>
-    <p th:text="|날짜 : ${inquiry.getCreatedAt()}|"></p>
+    <p th:text="|날짜 : ${inquiry.getCreateDate()}|"></p>
     <p th:text="|답변여부 : ${inquiry.getConfirm()}|"></p>
     <a th:href="@{|/inquiry/${inquiry.id}|}" class="btn btn-primary">상세</a>
   </div>

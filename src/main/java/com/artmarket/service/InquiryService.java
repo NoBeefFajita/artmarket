@@ -22,5 +22,15 @@ public interface InquiryService {
      * 문의 사항 저장
      */
     void saveInquiry(Inquiry inquiry, User user);
+
+    /**
+     * 이미지 포함 문의 사항 저장
+     * 저장 경로 : C:/artmarket/image/inquiry/{유저ID}
+     */
     void saveInquiryFile(String title, String content, MultipartFile file, User user) throws IOException;
+
+    /**
+     * 고객 문의 정보 반환
+     */
+    Inquiry detail(Long id);
 }

@@ -51,12 +51,9 @@ function save() {
         fetch("/api/inquiry/save", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         })
-            .then(response => {
-                console.log(response)
-                alert("문의 사항이 접수되었습니다.")
-            })
+            .catch(e => alert(e))
     } else {    // 사진 있을 때
         let form = document.getElementById("form");
         let formData = new FormData(form);
@@ -69,10 +66,9 @@ function save() {
             method: 'POST',
             body: formData
         })
-            .then(response => {
-                console.log(response)
-                alert("문의 사항이 접수되었습니다.")
-            })
+            .catch(e => alert(e + " 이미지"))
     }
-    location.href = "/inquiry"
 }
+
+
+

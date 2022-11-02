@@ -14,11 +14,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -50,26 +52,45 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     public void saveInquiryFile(String title, String content,MultipartFile file, User user) throws IOException {
-        // 이미지 저장
+        // 이미지 저장 경로 설정
         String path = "C:/artmarket/image/inquiry/";
         String userid = String.valueOf(user.getId());
         Path filePath = Paths.get(path,userid);
         if (Files.notExists(filePath)) {
             Files.createDirectories(filePath);
         }
-        Path targetPath = Paths.get(filePath.toString(),file.getOriginalFilename());
+
+        // 확장자
+        String ext = findExt(Objects.requireNonNull(file.getOriginalFilename()));
+
+        // 파일 이름 랜덤 생성
+        UUID uuid = UUID.randomUUID();
+        String saveName = userid + user.getUsername() + uuid + "." + ext;
+
+        Path targetPath = Paths.get(filePath.toString(), saveName);
+
+        // 이미지 저장
         file.transferTo(targetPath);
+
+        String fileSource = targetPath.toString().replace("\\","/");
 
         // insert
         Inquiry inquiry = new Inquiry();
         inquiry.setTitle(title);
         inquiry.setContent(content);
-        inquiry.setConfirm(Confirm.X);
-        inquiry.setUser(user);
-        inquiry.setImg(path);
-        inquiryRepository.save(inquiry);
+        inquiry.setImg(fileSource);
+        saveInquiry(inquiry,user);
     }
 
+    /**
+     * 확장자 추출
+     */
+    private String findExt(@NotNull String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1);
+    }
 
-
+    @Override
+    public Inquiry detail(Long id) {
+        return inquiryRepository.findById(id).orElseThrow();
+    }
 }

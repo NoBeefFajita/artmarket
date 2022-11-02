@@ -31,9 +31,6 @@ public class Inquiry extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Confirm confirm;
 
-    // 이미지 이름
-    private String imgName;
-
     // 이미지 경로
     private String img;
 

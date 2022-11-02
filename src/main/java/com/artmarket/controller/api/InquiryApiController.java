@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.File;
 import java.io.IOException;
 
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class InquiryApiController {
                                             @AuthenticationPrincipal PrincipalDetail principal) {
 
         inquiryService.saveInquiry(inquiry, principal.getUser());
-        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+        return new ResponseDto<>(HttpStatus.OK.value(), 1);
     }
 
     @PostMapping("/saveFile")
