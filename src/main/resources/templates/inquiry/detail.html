@@ -35,8 +35,8 @@
     <br/>
 
     <div th:align="right">
-        <div th:if="${inquiry.user.getUsername() == #authentication.name}">
-            <a th:href="@{|/inquiry/${inquiry.getId()}/update|}"  class="btn btn-primary">수정</a>
+        <div>
+            <a th:if="${inquiry.user.getUsername() == #authentication.name}" th:href="@{|/inquiry/${inquiry.getId()}/update|}"  class="btn btn-primary">수정</a>
             <button id="btn-delete"  class="btn btn-danger">삭제</button>
         </div>
     </div>

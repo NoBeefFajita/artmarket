@@ -38,4 +38,24 @@ public class InquiryApiController {
         return new ResponseDto<>(HttpStatus.OK.value(), 1);
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseDto<Integer> updateInquiry(@PathVariable Long id,
+                                              @RequestBody Inquiry inquiry) {
+        inquiryService.updateInquiry(id, inquiry);
+        return new ResponseDto<>(HttpStatus.OK.value(), 1);
+    }
+
+    @PutMapping("/updateFile/{id}")
+    public ResponseDto<Integer> updateInquiry(@PathVariable Long id,
+                                              @RequestParam MultipartFile file,
+                                              @RequestParam String title,
+                                              @RequestParam String content) throws IOException {
+        inquiryService.updateInquiryFile(id, title, content, file);
+        return new ResponseDto<>(HttpStatus.OK.value(), 1);
+    }
+
+
+
+
+
 }

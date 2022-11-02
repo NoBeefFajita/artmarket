@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public interface InquiryService {
@@ -46,5 +45,15 @@ public interface InquiryService {
      * 유저 : false
      */
     Boolean checkAdmin(User user);
+
+    /**
+     * 문의 사항 수정
+     */
+    void updateInquiry(Long id, Inquiry inquiry);
+
+    /**
+     * 이미지 포함 문의 사항 수정
+     */
+    void updateInquiryFile(Long id, String title, String content, MultipartFile file) throws IOException;
 
 }

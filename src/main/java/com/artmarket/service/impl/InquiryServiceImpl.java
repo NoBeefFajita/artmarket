@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,27 +53,8 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     public void saveInquiryFile(String title, String content,MultipartFile file, User user) throws IOException {
-        // 이미지 저장 경로 설정
-        String path = "C:/artmarket/image/inquiry/";
-        String userid = String.valueOf(user.getId());
-        Path filePath = Paths.get(path,userid);
-        if (Files.notExists(filePath)) {
-            Files.createDirectories(filePath);
-        }
-
-        // 확장자
-        String ext = findExt(Objects.requireNonNull(file.getOriginalFilename()));
-
-        // 파일 이름 랜덤 생성
-        UUID uuid = UUID.randomUUID();
-        String saveName = userid + user.getUsername() + uuid + "." + ext;
-
-        Path targetPath = Paths.get(filePath.toString(), saveName);
-
         // 이미지 저장
-        file.transferTo(targetPath);
-
-        String fileSource = targetPath.toString().replace("\\","/");
+        String fileSource = saveFile(file, user);
 
         // insert
         Inquiry inquiry = new Inquiry();
@@ -102,5 +84,83 @@ public class InquiryServiceImpl implements InquiryService {
     @Override
     public Boolean checkAdmin(User user) {
         return user.getRole().equals(RoleType.ADMIN);
+    }
+
+    @Override
+    public void updateInquiry(Long id, Inquiry editInquiry) {
+        Inquiry inquiry = detail(id);
+
+        // delete 면 사진 삭제
+        if(editInquiry.getImg().equals("delete")) {
+            deleteImg(inquiry);
+            inquiry.setImg(null);
+        }
+        inquiry.setTitle(editInquiry.getTitle());
+        inquiry.setContent(editInquiry.getContent());
+        inquiry.setConfirm(Confirm.X);
+        inquiryRepository.save(inquiry);
+    }
+
+    @Override
+    public void updateInquiryFile(Long id, String title, String content, MultipartFile file) throws IOException {
+        Inquiry inquiry = detail(id);
+
+        // 기존 이미지 삭제
+        if (inquiry.getImg() != null) {
+            deleteImg(inquiry);
+        }
+
+        // 새로운 이미지 저장
+        String fileSource = saveFile(file, inquiry.getUser());
+
+        // update
+        inquiry.setTitle(title);
+        inquiry.setContent(content);
+        inquiry.setConfirm(Confirm.X);
+        inquiry.setImg(fileSource);
+        inquiryRepository.save(inquiry);
+    }
+
+    /**
+     * 이미지 저장
+     */
+    private String saveFile(MultipartFile file, User user) throws IOException {
+        // 이미지 저장 경로 설정
+        String path = "C:/artmarket/image/inquiry/";
+        String userid = String.valueOf(user.getId());
+        Path filePath = Paths.get(path,userid);
+        if (Files.notExists(filePath)) {
+            Files.createDirectories(filePath);
+        }
+
+        // 확장자
+        String ext = findExt(Objects.requireNonNull(file.getOriginalFilename()));
+
+        // 파일 이름 랜덤 생성
+        UUID uuid = UUID.randomUUID();
+        String saveName = userid + user.getUsername() + uuid + "." + ext;
+
+        Path targetPath = Paths.get(filePath.toString(), saveName);
+
+        // 이미지 저장
+        file.transferTo(targetPath);
+
+        /*
+        Window 에서 이미지 경로 불러올 때 "\" 일 때 오류 발생, "/"로 변경
+        Mac, Linux 에서는 미확인
+         */
+        return targetPath.toString().replace("\\","/");
+    }
+
+    /**
+     * 이미지 삭제
+     */
+    private void deleteImg(Inquiry inquiry){
+        try {
+            File file = new File(inquiry.getImg());
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

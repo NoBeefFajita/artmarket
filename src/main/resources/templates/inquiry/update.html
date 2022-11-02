@@ -18,6 +18,7 @@
 
 <div class="container">
     <form enctype="multipart/form-data" id="form">
+        <div style="display: none" id="id"  th:text="${inquiry.getId()}"></div>
         <div class="form-group">
             <input th:value="${inquiry.getTitle()}" type="text"class="form-control" placeholder="제목" id="title">
         </div>
@@ -26,7 +27,12 @@
             <textarea th:utext="${inquiry.getContent()}" id="content_text" cols="15" placeholder="문의 사항 쓰기"></textarea>
         </div>
 
-        <img th:src="@{/img/display?fileSource=}+${inquiry.img}" alt="첨부이미지" th:if="${inquiry.img != null}" width="300px"/>
+        <div class="form-group">
+            <div th:if="${inquiry.img != null}">
+                <img th:src="@{/img/display?fileSource=}+${inquiry.img}" alt="첨부이미지" width="300px" id="previous_img"/>
+                <button type="button" id="delete_pre_img">사진 삭제</button>
+            </div>
+        </div>
         <div class="form-group">
             <div id="new_post_file">
                 <div class="filebox">
@@ -39,7 +45,7 @@
             </div>
         </div>
 
-        <button id="btn-update" class="btn btn-primary" >수정</button>
+        <button type="button" id="btn-update" class="btn btn-primary" >수정</button>
     </form>
 </div>
 <footer th:replace="/layout/footer.html :: fragment-footer"></footer>
